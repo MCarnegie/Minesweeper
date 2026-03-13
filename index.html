@@ -1,0 +1,51 @@
+<!doctype html>
+<!--
+TODO: This is a comment. Change this header comment to describe the 
+web page and include your name as author.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>MINESWEEPER</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="./js/main.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="game">
+        
+        <div class="canvas-wrapper">
+            <canvas id="myCanvas" width="600" height="600" style="background-color: lightgray;">
+                Your browser does not support the HTML canvas element.
+            </canvas>
+            <img src="./images/title.png" class="title wipe-left" id="title" alt="">
+            <button class="overlay-btn" id="btn-start">START!</button>
+            <button class="overlay-btn hidden" id="btn-easy">EASY</button>
+            <button class="overlay-btn hidden" id="btn-medium">MEDIUM</button>
+            <button class="overlay-btn hidden" id="btn-hard">HARD</button>
+            <button class="overlay-btn hidden" id="btn-plyagn">Play Again?</button>
+            <button class="overlay-btn hidden" id="btn-mainmenu">Main Menu</button>
+            <p class="tile hidden" id="info">Hover Over a Difficulty!</p>
+            
+        </div>
+
+        <div class="gameElements hidden" id="gameStuff">
+            <button id="flag">Flag</button>
+            
+            <h1>Rounds Won: <div id="rounds">0</div>
+            </h1>
+            <h1>Number of Bombs: <div id="bombs"></div>
+            </h1>
+            <button class="btn" id="reset">Main Menu</button>
+            
+        </div>
+
+    </div>
+
+
+
+</body>
+
+</html>

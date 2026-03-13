@@ -1,0 +1,198 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-image: url('../images/backgroundimage.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: inherit;
+    filter: blur(8px);
+    z-index: -1;
+    transform: scale(1.1);
+    
+}
+
+.game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+button {
+    width: 80px;
+    height: 60px;
+    background-color: gray;
+}
+
+.canvas-wrapper {
+    position: relative;
+    display: inline-block;
+
+}
+
+.gameElements {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+}
+
+.overlay-btn {
+    position: absolute;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+
+}
+
+.overlay-btn:hover {
+    background-color: red;
+}
+
+.overlay-btn:active {
+    transform: translateY(0px) scale(0.97);
+}
+
+.btn:hover {
+    background-color: red;
+}
+
+.btn:active {
+    transform: translateY(0px) scale(0.97);
+}
+
+.tile {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: x-large;
+    top: 0%;
+    left: 5%;
+    background-color: white;
+    border-radius: 6px;
+    padding: 10px 20px;
+    width: 83%;
+    height: 60%;
+}
+
+.title {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: x-large;
+    top: 20%;
+    left: 12%;
+}
+
+@keyframes wipeLeft {
+    from {
+        clip-path: inset(0 0 0 100%);
+    }
+
+    to {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+.wipe-left {
+    animation: wipeLeft 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+#btn-start {
+
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 50px;
+    color: #0d0d0d;
+    opacity: 0;
+    animation: fadeIn 0.4s ease-out forwards;
+    animation-delay: 1s
+}
+
+#btn-easy {
+    top: 80%;
+    left: 15%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 50px;
+    color: #0d0d0d;
+}
+
+#btn-medium {
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 50px;
+    color: #0d0d0d;
+}
+
+#btn-hard {
+    top: 80%;
+    left: 85%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 50px;
+    color: #0d0d0d;
+}
+
+#btn-plyagn {
+    top: 80%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 50px;
+    color: #0d0d0d;
+}
+
+#btn-mainmenu {
+    top: 80%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 50px;
+    color: #0d0d0d;
+}
+
+.hidden {
+    display: none;
+}

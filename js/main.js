@@ -7,10 +7,17 @@ window.addEventListener("load", () => {
     const btnh = document.getElementById("btn-hard")
     const info = document.getElementById("info")
     const gameStuff = document.getElementById("gameStuff")
-    const title = document.getElementById("title")
     const btnplyagn = document.getElementById("btn-plyagn")
     const btnmain = document.getElementById("btn-mainmenu")
     const rounds = document.getElementById("rounds")
+
+    function getCanvasSize() {
+        const screenSize = Math.min(window.innerWidth, window.innerHeight);
+        return screenSize < 600 ? 480 : 600;
+    }
+    canvas.height = getCanvasSize();
+    canvas.width = getCanvasSize();
+
 
     let gameState;
     //needed in local storage
@@ -44,12 +51,24 @@ window.addEventListener("load", () => {
     let isFlagging = false;
     let mousex;
     let mousey;
-    let gameOn = true;
+    let gameOn = false;
 
     /*each sprite is 64x64 */
     const img = new Image();
     img.src = './images/spritesheet.png';
-    
+    const title = new Image();
+    title.src = './images/title.png'
+    const cover = {
+        x:(canvas.width-460)/2,
+        y:(canvas.height-400)/2,
+        w:460,
+        h:215,
+        draw(){
+            ctx.fillStyle = "rgb(212, 212, 212)"
+            ctx.fillRect(this.x,this.y,this.w,this.h)
+        }
+    }
+
 
     class Square {
         constructor(x, y, w, h, isBomb, isVisible) {
@@ -128,7 +147,7 @@ window.addEventListener("load", () => {
                         squares[row][col].beenClicked = true;
                         makeAllBombsVisible()
 
-                        setTimeout(()=>{gameLost()},1500)
+                        setTimeout(() => { gameLost() }, 1500)
                     }
 
                     clearEmpties(col, row)
@@ -292,8 +311,8 @@ window.addEventListener("load", () => {
 
     function gameLost() {
 
-        canvas.width = 600;
-        canvas.height = 600;
+        canvas.width = getCanvasSize();
+        canvas.height = getCanvasSize();
         localStorage.setItem("choicesMade", false)
         info.classList.remove("hidden")
         info.innerText = `YOU DIED, you completed ${localStorage.getItem("rounds")} rounds.`
@@ -303,40 +322,52 @@ window.addEventListener("load", () => {
         btnmain.classList.remove("hidden")
         localStorage.setItem("rounds", 0)
         rounds.innerText = localStorage.getItem("rounds")
+        localStorage.removeItem("game")
     }
 
     function gameWon() {
-        canvas.width = 600;
-        canvas.height = 600;
+        canvas.width = getCanvasSize();
+        canvas.height = getCanvasSize();
         info.classList.remove("hidden")
         localStorage.setItem("choicesMade", false)
-        localStorage.setItem("rounds", parseInt(localStorage.getItem("rounds"))+1)
+        localStorage.setItem("rounds", parseInt(localStorage.getItem("rounds")) + 1)
         info.innerText = `Congrats, you beat this round! Current Rounds Won: ${localStorage.getItem("rounds")}`
         btnplyagn.classList.remove("hidden")
         btnmain.classList.remove("hidden")
         gameStuff.classList.add("hidden")
+        localStorage.removeItem("game")
         gameState.gameOn = false
         rounds.innerText = localStorage.getItem("rounds")
     }
 
-    function checkGame(){
-        if (!gameOn) {
+    function checkGame() {
+        if (!gameOn && JSON.parse(localStorage.getItem("game")) != null) {
             if (checkWin()) {
                 gameWon()
             } else {
                 gameLost();
             }
 
-        }
+        } 
     }
+
+    function titleCard(){
+       ctx.drawImage(title,(canvas.width-460)/2,(canvas.height-400)/2,460,215)
+       cover.draw()
+       cover.w -= 6
+    }
+   
 
     function gameLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
         
-        
+        if (!gameOn && JSON.parse(localStorage.getItem("game")) == null && info.classList.contains("hidden")) {
+            titleCard()
+            rounds.innerText = localStorage.getItem("rounds")
+        }
         if (localStorage.getItem("choicesMade") == "true") {
             drawSquares();
+            rounds.innerText = localStorage.getItem("rounds")
         }
 
 
@@ -358,7 +389,6 @@ window.addEventListener("load", () => {
         btnm.classList.add("hidden")
         btnh.classList.add("hidden")
         info.classList.add("hidden")
-        title.classList.add("hidden")
         gameStuff.classList.remove("hidden")
     }
 
@@ -374,7 +404,8 @@ window.addEventListener("load", () => {
         localStorage.setItem("game", JSON.stringify(gameState))
     }
 
-    checkGame()
+ 
+    checkGame();
     img.onload = () => {
         let int = setInterval(gameLoop, 10)
     };
@@ -391,7 +422,6 @@ window.addEventListener("load", () => {
     btnstr.addEventListener("click", () => {
 
         btnstr.classList.add("hidden")
-        title.classList.add("hidden")
         btne.classList.remove("hidden")
         btnm.classList.remove("hidden")
         btnh.classList.remove("hidden")
@@ -416,8 +446,8 @@ window.addEventListener("load", () => {
             curSquares: [],
             curGridx: 9,
             curGridy: 9,
-            cursquareSize: 30,
-            curNumBombs: 10,
+            cursquareSize: Math.floor(canvas.width / (9)),
+            curNumBombs: 0,//10
             gameOn: true
         }
         addGameToVars()
@@ -428,8 +458,8 @@ window.addEventListener("load", () => {
             curSquares: [],
             curGridx: 16,
             curGridy: 16,
-            cursquareSize: 30,
-            curNumBombs: 40,
+            cursquareSize: Math.floor(canvas.width / (16)),
+            curNumBombs: 0,//40
             gameOn: true
         }
         addGameToVars()
@@ -440,8 +470,8 @@ window.addEventListener("load", () => {
             curSquares: [],
             curGridx: 30,
             curGridy: 16,
-            cursquareSize: 30,
-            curNumBombs: 99,
+            cursquareSize: Math.floor(canvas.width / (30)),
+            curNumBombs: 0,//99
             gameOn: true
         }
         addGameToVars()
@@ -459,16 +489,16 @@ window.addEventListener("load", () => {
 
     })
 
-    
+
 
     btnmain.addEventListener("click", () => {
-        localStorage.clear()
+        localStorage.removeItem("choicesMade")
         window.location.reload()
     })
 
-    document.getElementById("reset").addEventListener("click",()=>{
-        localStorage.clear()
-        window.location.reload()
-    })
+    // document.getElementById("reset").addEventListener("click", () => {
+    //     localStorage.clear()
+    //     window.location.reload()
+    // })
 
 })

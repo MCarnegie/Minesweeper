@@ -17,10 +17,10 @@ web page and include your name as author.
     <div class="game">
         
         <div class="canvas-wrapper">
-            <canvas id="myCanvas" width="600" height="600" style="background-color: lightgray;">
+            <canvas id="myCanvas" width="600" height="600" style="background-color: rgb(212, 212, 212);">
                 Your browser does not support the HTML canvas element.
             </canvas>
-            <img src="./images/title.png" class="title wipe-left" id="title" alt="">
+            
             <button class="overlay-btn" id="btn-start">START!</button>
             <button class="overlay-btn hidden" id="btn-easy">EASY</button>
             <button class="overlay-btn hidden" id="btn-medium">MEDIUM</button>
@@ -38,7 +38,9 @@ web page and include your name as author.
             </h1>
             <h1>Number of Bombs: <div id="bombs"></div>
             </h1>
-            <button class="btn" id="reset">Main Menu</button>
+            <button class="overlay-btn hidden" id="btn-mainmenu2">Main Menu</button>
+            <!-- Put into Help Menu as a full reset of the game -->
+            <!-- <button class="btn" id="reset">Reset Game</button> -->
             
         </div>
 

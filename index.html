@@ -15,12 +15,12 @@ web page and include your name as author.
 
 <body>
     <div class="game">
-        
+
         <div class="canvas-wrapper">
             <canvas id="myCanvas" width="600" height="600" style="background-color: rgb(212, 212, 212);">
                 Your browser does not support the HTML canvas element.
             </canvas>
-            
+
             <button class="overlay-btn" id="btn-start">START!</button>
             <button class="overlay-btn hidden" id="btn-easy">EASY</button>
             <button class="overlay-btn hidden" id="btn-medium">MEDIUM</button>
@@ -28,20 +28,58 @@ web page and include your name as author.
             <button class="overlay-btn hidden" id="btn-plyagn">Play Again?</button>
             <button class="overlay-btn hidden" id="btn-mainmenu">Main Menu</button>
             <p class="tile hidden" id="info">Hover Over a Difficulty!</p>
-            
+
         </div>
 
         <div class="gameElements hidden" id="gameStuff">
             <button id="flag">Flag</button>
-            
+
             <h1>Rounds Won: <div id="rounds">0</div>
             </h1>
             <h1>Number of Bombs: <div id="bombs"></div>
             </h1>
-            <button class="overlay-btn hidden" id="btn-mainmenu2">Main Menu</button>
+            <div class="help-menu hidden" id="helpmenu">
+                <h2>How to Play</h2>
+
+                <p>
+                    The goal of the game is to uncover all safe tiles on a grid without clicking on a mine.
+                    Most tiles are safe, but some hide mines underneath.
+                </p>
+
+                <p>
+                    When you reveal a tile it will either be blank (meaning no mines are nearby),
+                    a number from 1–8 (how many mines are adjacent to the square), or a mine (ends the game).
+                </p>
+
+                <p>
+                    Left click a tile to reveal it. Press the flag button to place flags on tiles you think hide
+                    mines.
+                </p>
+
+                <p>
+                    You win when every safe tile has been revealed, and you lose when you click a mine.
+                </p>
+
+                <p>
+                    The number of rounds you win in a row for any difficulty is tracked, try to get it as high as
+                    possible!
+                    To reset your streak, press the Reset button below.
+                </p>
+
+                <div class="help-menu-btns">
+                    <button id="reset">Reset Game</button>
+                    <button onclick="document.getElementById('helpmenu').classList.add('hidden')">Close</button>
+                </div>
+
+
+
+            </div>
+
+            <button onclick="document.getElementById('helpmenu').classList.remove('hidden')">Help</button>
+
             <!-- Put into Help Menu as a full reset of the game -->
             <!-- <button class="btn" id="reset">Reset Game</button> -->
-            
+
         </div>
 
     </div>

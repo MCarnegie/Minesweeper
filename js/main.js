@@ -10,6 +10,8 @@ window.addEventListener("load", () => {
     const btnplyagn = document.getElementById("btn-plyagn")
     const btnmain = document.getElementById("btn-mainmenu")
     const rounds = document.getElementById("rounds")
+    const bombs = document.getElementById("bombs")
+
 
     function getCanvasSize() {
         const screenSize = Math.min(window.innerWidth, window.innerHeight);
@@ -156,8 +158,10 @@ window.addEventListener("load", () => {
             } else {
                 if (!squares[row][col].flaged) {
                     squares[row][col].flaged = true
+                    bombs.innerHTML = parseInt(bombs.innerHTML)-1
                 } else {
                     squares[row][col].flaged = false
+                    bombs.innerHTML = parseInt(bombs.innerHTML)+1
                 }
 
             }
@@ -203,7 +207,7 @@ window.addEventListener("load", () => {
             }
         }
 
-        document.getElementById("bombs").innerHTML = bombsNeeded
+        bombs.innerHTML = bombsNeeded
         for (let i = 0; i < squares.length; i++) {
             for (let j = 0; j < squares[i].length; j++) {
                 checkMinesAround(i, j, squares[i][j])
@@ -246,7 +250,7 @@ window.addEventListener("load", () => {
         let dx = [-1, -1, -1, 0, 0, 1, 1, 1]
         let dy = [-1, 0, 1, -1, 1, -1, 0, 1]
         let w = squares[row][col]
-        if (w.beenChecked || w.isBomb) return;
+        if (w.beenChecked || w.isBomb || w.flaged) return;
         w.isVisible = true
         w.beenChecked = true
         if (w.minesAround > 0) return;
@@ -269,11 +273,11 @@ window.addEventListener("load", () => {
 
     document.getElementById("flag").addEventListener("click", () => {
         let c = document.getElementById("flag");
-        if (c.style.backgroundColor == "gray") {
+        if (c.style.backgroundColor == "white") {
             c.style.backgroundColor = "red"
             isFlagging = true
         } else {
-            c.style.backgroundColor = "gray"
+            c.style.backgroundColor = "white"
             isFlagging = false
         }
     })
@@ -447,7 +451,7 @@ window.addEventListener("load", () => {
             curGridx: 9,
             curGridy: 9,
             cursquareSize: Math.floor(canvas.width / (9)),
-            curNumBombs: 0,//10
+            curNumBombs: 10,//10
             gameOn: true
         }
         addGameToVars()
@@ -459,7 +463,7 @@ window.addEventListener("load", () => {
             curGridx: 16,
             curGridy: 16,
             cursquareSize: Math.floor(canvas.width / (16)),
-            curNumBombs: 0,//40
+            curNumBombs: 40,//40
             gameOn: true
         }
         addGameToVars()
@@ -471,7 +475,7 @@ window.addEventListener("load", () => {
             curGridx: 30,
             curGridy: 16,
             cursquareSize: Math.floor(canvas.width / (30)),
-            curNumBombs: 0,//99
+            curNumBombs: 99,//99
             gameOn: true
         }
         addGameToVars()
@@ -496,9 +500,9 @@ window.addEventListener("load", () => {
         window.location.reload()
     })
 
-    // document.getElementById("reset").addEventListener("click", () => {
-    //     localStorage.clear()
-    //     window.location.reload()
-    // })
+    document.getElementById("reset").addEventListener("click", () => {
+        localStorage.clear()
+        window.location.reload()
+    })
 
 })

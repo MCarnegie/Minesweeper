@@ -1,3 +1,10 @@
+/**
+ * Marco Carnegie
+ * 2026-03-11
+ * Main Javascript file for canvas and dom manipulation
+ */
+
+
 window.addEventListener("load", () => {
     const canvas = document.getElementById("myCanvas");
     const ctx = canvas.getContext("2d");
@@ -12,7 +19,10 @@ window.addEventListener("load", () => {
     const rounds = document.getElementById("rounds")
     const bombs = document.getElementById("bombs")
 
-
+    /**
+     * 
+     * Changes the Canvas size based on screen size, Returns new size of canvas
+     */
     function getCanvasSize() {
         const screenSize = Math.min(window.innerWidth, window.innerHeight);
         return screenSize < 600 ? 480 : 600;
@@ -22,7 +32,6 @@ window.addEventListener("load", () => {
 
 
     let gameState;
-    //needed in local storage
 
     if (localStorage.getItem("choicesMade") != null) {
         localStorage.setItem("choicesMade", localStorage.getItem("choicesMade"))
@@ -61,13 +70,13 @@ window.addEventListener("load", () => {
     const title = new Image();
     title.src = './images/title.png'
     const cover = {
-        x:(canvas.width-460)/2,
-        y:(canvas.height-400)/2,
-        w:460,
-        h:215,
-        draw(){
+        x: (canvas.width - 460) / 2,
+        y: (canvas.height - 400) / 2,
+        w: 460,
+        h: 215,
+        draw() {
             ctx.fillStyle = "rgb(212, 212, 212)"
-            ctx.fillRect(this.x,this.y,this.w,this.h)
+            ctx.fillRect(this.x, this.y, this.w, this.h)
         }
     }
 
@@ -92,7 +101,13 @@ window.addEventListener("load", () => {
 
 
     }
-
+    /**
+     * 
+     * Draws a square based on if it is flaged,misflaged,visible,bomb,bomb that has been clicked and visible
+     * and/or number of bombs around the square
+     * 
+     * The function takes in an object of type square
+     */
     function draw(s) {
         if (s.flaged && !s.isVisible) {
             if (s.misflaged) {
@@ -131,7 +146,11 @@ window.addEventListener("load", () => {
 
 
 
-
+    /**
+     * Event listener to see if you click anywhere on the canvas and if you did, what square you hit and how it
+     * should be changed accordingly.
+     * Takes in the click event
+     */
     canvas.addEventListener('click', (e) => {
         const rect = canvas.getBoundingClientRect();
         mousex = e.clientX - rect.left;
@@ -158,10 +177,10 @@ window.addEventListener("load", () => {
             } else {
                 if (!squares[row][col].flaged) {
                     squares[row][col].flaged = true
-                    bombs.innerHTML = parseInt(bombs.innerHTML)-1
+                    bombs.innerHTML = parseInt(bombs.innerHTML) - 1
                 } else {
                     squares[row][col].flaged = false
-                    bombs.innerHTML = parseInt(bombs.innerHTML)+1
+                    bombs.innerHTML = parseInt(bombs.innerHTML) + 1
                 }
 
             }
@@ -179,7 +198,12 @@ window.addEventListener("load", () => {
     });
 
 
-
+    /**
+     * Makes the grid of squares based on how many squares you want in the x and y direction
+     * and based on how many pixels you want each square to be (Ex: 4*4 pixels)
+     * 
+     * Paramaters are ints for grid size in x, grid size in y, size of square in pixels^2
+     */
     function makeSquares(gridx, gridy, squareSize) {
 
         canvas.height = gridy * squareSize
@@ -215,6 +239,9 @@ window.addEventListener("load", () => {
         }
     }
 
+    /**
+     * Draws every square in grid
+     */
     function drawSquares() {
         for (let i = 0; i < squares.length; i++) {
             for (let j = 0; j < squares[i].length; j++) {
@@ -223,6 +250,14 @@ window.addEventListener("load", () => {
         }
     }
 
+
+    /**
+     * Checks how many mines are around an individual square
+     * 
+     * Params are ints of the row and col of the square (its position) 
+     * and the square object (to assign a number)
+     * 
+     */
     function checkMinesAround(row, col, square) {
 
         let dx = [-1, -1, -1, 0, 0, 1, 1, 1]
@@ -246,6 +281,13 @@ window.addEventListener("load", () => {
         square.minesAround = count
     }
 
+    /**
+     * Recursive function to make squares that dont have any bombs in them visible
+     * stopping when it sees a bomb or a square that has a number
+     * 
+     * Takes in ints of row and col of the grid of squares
+     * 
+     */
     function clearEmpties(col, row) {
         let dx = [-1, -1, -1, 0, 0, 1, 1, 1]
         let dy = [-1, 0, 1, -1, 1, -1, 0, 1]
@@ -270,7 +312,9 @@ window.addEventListener("load", () => {
 
 
 
-
+    /**
+     * Changes between flagging and non-flagging mdoe
+     */
     document.getElementById("flag").addEventListener("click", () => {
         let c = document.getElementById("flag");
         if (c.style.backgroundColor == "white") {
@@ -282,6 +326,9 @@ window.addEventListener("load", () => {
         }
     })
 
+    /**
+     * Makes all unmarked bombs visible and makes mismarked bombs shown
+     */
     function makeAllBombsVisible() {
         for (let i = 0; i < squares.length; i++) {
             for (let j = 0; j < squares[i].length; j++) {
@@ -295,6 +342,11 @@ window.addEventListener("load", () => {
             }
         }
     }
+    /**
+     * 
+     * Checks to see if the player has won the game
+     * Returns a boolean based on yes or no
+     */
     function checkWin() {
         let hidden = 0;
         for (let i = 0; i < squares.length; i++) {
@@ -313,6 +365,10 @@ window.addEventListener("load", () => {
         }
     }
 
+    /**
+     * If the player loses the game, resets the canvas to proper size
+     * Changes booleans/values in local storage, and brings up the play again menu
+     */
     function gameLost() {
 
         canvas.width = getCanvasSize();
@@ -328,7 +384,11 @@ window.addEventListener("load", () => {
         rounds.innerText = localStorage.getItem("rounds")
         localStorage.removeItem("game")
     }
-
+    /**
+     * If the player wins the game, resets the canvas to proper size
+     * Changes booleans/values in local storage, and allows the player to continue
+     * their streak
+     */
     function gameWon() {
         canvas.width = getCanvasSize();
         canvas.height = getCanvasSize();
@@ -344,27 +404,21 @@ window.addEventListener("load", () => {
         rounds.innerText = localStorage.getItem("rounds")
     }
 
-    function checkGame() {
-        if (!gameOn && JSON.parse(localStorage.getItem("game")) != null) {
-            if (checkWin()) {
-                gameWon()
-            } else {
-                gameLost();
-            }
-
-        } 
+    /**
+     * Main Menu Animation
+     */
+    function titleCard() {
+        ctx.drawImage(title, (canvas.width - 460) / 2, (canvas.height - 400) / 2, 460, 215)
+        cover.draw()
+        cover.w -= 6
     }
 
-    function titleCard(){
-       ctx.drawImage(title,(canvas.width-460)/2,(canvas.height-400)/2,460,215)
-       cover.draw()
-       cover.w -= 6
-    }
-   
-
+    /**
+     * Function that continuously draws the squares or displays the titlecard if not in a game
+     */
     function gameLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+
         if (!gameOn && JSON.parse(localStorage.getItem("game")) == null && info.classList.contains("hidden")) {
             titleCard()
             rounds.innerText = localStorage.getItem("rounds")
@@ -377,6 +431,10 @@ window.addEventListener("load", () => {
 
 
     }
+
+    /**
+     * Assigns variables based on the current game state
+     */
     function assignVars() {
         squares = gameState.curSquares;
         gridx = gameState.curGridx;
@@ -386,7 +444,9 @@ window.addEventListener("load", () => {
         gameOn = gameState.gameOn
     }
 
-
+    /**
+     * Hides menu buttons and displays game info while playing game
+     */
     function makeButtonsHidden() {
         btnstr.classList.add("hidden")
         btne.classList.add("hidden")
@@ -408,13 +468,15 @@ window.addEventListener("load", () => {
         localStorage.setItem("game", JSON.stringify(gameState))
     }
 
- 
-    checkGame();
+
+
     img.onload = () => {
         let int = setInterval(gameLoop, 10)
     };
 
-
+    /**
+     * Creates a new game based on current gamestate
+     */
     function addGameToVars() {
         assignVars()
         makeSquares(gridx, gridy, squareSize);
@@ -492,8 +554,6 @@ window.addEventListener("load", () => {
         info.innerText = "Hover Over a Difficulty!"
 
     })
-
-
 
     btnmain.addEventListener("click", () => {
         localStorage.removeItem("choicesMade")

@@ -1,3 +1,9 @@
+/**
+ * Marco Carnegie
+ * 2026-03-11
+ * Main Styling Sheet
+ */
+
 body {
     display: flex;
     flex-direction: column;
@@ -36,6 +42,10 @@ button {
     height: 60px;
     background-color: white;
     
+}
+
+button:hover{
+    background-color: lightblue;
 }
 
 .canvas-wrapper {

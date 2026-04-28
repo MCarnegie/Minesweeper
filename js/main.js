@@ -159,7 +159,7 @@ window.addEventListener("load", () => {
         let col = Math.floor(mousex / squareSize)
         let row = Math.floor(mousey / squareSize)
 
-        if (col >= 0 && col < gridx && row >= 0 && row < gridy) {
+        if (col >= 0 && col < gridx && row >= 0 && row < gridy && localStorage.getItem("choicesMade") == "true") {
 
             if (!isFlagging) {
                 if (!squares[row][col].flaged) {
@@ -188,7 +188,7 @@ window.addEventListener("load", () => {
             localStorage.setItem("game", JSON.stringify(gameState))
 
         }
-        if (checkWin()) {
+        if (localStorage.getItem("choicesMade") == "true"&&checkWin()) {
             gameWon();
         }
 
